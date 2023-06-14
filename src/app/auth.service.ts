@@ -31,7 +31,15 @@ export class AuthService {
     }
   }
 
-  // Other AuthService code...
+  getUserRole(): string {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      return user.role;
+    }
+    return '';
+  }
 }
+
 
 

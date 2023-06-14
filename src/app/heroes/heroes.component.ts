@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { AuthService } from '../auth.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-heroes',
@@ -10,16 +11,20 @@ import { HeroService } from '../hero.service';
 })
 export class HeroesComponent implements OnInit {
   heroes: Hero[] = [];
+  canEdit$: Observable<boolean> | undefined;
 
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.getHeroes();
+    this.canEdit$ = this.authService.isLoggedIn$.pipe(
+      map(() => this.authService.getUserRole() !== 'user')
+    );
   }
 
   getHeroes(): void {
     this.heroService.getHeroes()
-    .subscribe(heroes => this.heroes = heroes);
+      .subscribe(heroes => this.heroes = heroes);
   }
 
   add(name: string): void {
@@ -32,8 +37,19 @@ export class HeroesComponent implements OnInit {
   }
 
   delete(hero: Hero): void {
-    this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero.id).subscribe();
+    this.canEdit$?.subscribe(canEdit => {
+      if (canEdit) {
+        // Only allow deletion for non-'user' roles
+        this.heroes = this.heroes.filter(h => h !== hero);
+        this.heroService.deleteHero(hero.id).subscribe();
+      }
+    });
   }
-
 }
+
+
+
+
+
+
+
