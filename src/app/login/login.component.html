@@ -1,16 +1,23 @@
 <div class="login-container">
-    <h2>Login</h2>
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username" [(ngModel)]="username" name="username">
-    </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password">
-    </div>
-    <div class="error-message" *ngIf="error">{{ error }}</div>
-    <button (click)="login()">Login</button>
+  <h2>Login</h2>
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" id="username" [(ngModel)]="username" name="username">
   </div>
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" [(ngModel)]="password" name="password">
+  </div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+  <button (click)="login()">Login</button>
+
+  <!-- Add the following code to conditionally display the buttons -->
+  <nav *ngIf="authService.isLoggedIn$ | async">
+    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/heroes">Heroes</a>
+  </nav>
+</div>
+
   
   
   

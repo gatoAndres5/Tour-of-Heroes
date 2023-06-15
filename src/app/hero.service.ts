@@ -10,7 +10,7 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
 
-  private heroesUrl = 'http://localhost:8400/api/heroes';  // URL to web API
+  private heroesUrl = 'http://localhost:8600/api/heroes';  // URL to web API
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

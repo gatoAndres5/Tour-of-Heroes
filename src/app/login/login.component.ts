@@ -12,7 +12,7 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   login(): void {
     this.error = ''; // Reset any previous error message
@@ -28,5 +28,7 @@ export class LoginComponent {
     }
   }
 }
+
+
 
 
