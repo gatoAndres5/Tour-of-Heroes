@@ -11,12 +11,13 @@
   <div class="error-message" *ngIf="error">{{ error }}</div>
   <button (click)="login()">Login</button>
 
-  <!-- Add the following code to conditionally display the buttons -->
-  <nav *ngIf="authService.isLoggedIn$ | async">
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/heroes">Heroes</a>
-  </nav>
+  <div *ngIf="isLoggedIn$ | async">
+    <!-- Display the buttons only when the user is logged in -->
+    <button routerLink="/dashboard">Dashboard</button>
+    <button routerLink="/heroes">Heroes</button>
+  </div>
 </div>
+
 
   
   
