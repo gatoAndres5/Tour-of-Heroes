@@ -31,6 +31,7 @@ import { AuthService } from './auth.service'; // Import the AuthService
     LoginComponent
   ],
   providers: [AuthService], // Add the AuthService to the providers
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
+

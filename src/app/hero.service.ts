@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Hero } from './hero';
 import { MessageService } from './message.service';
@@ -10,7 +10,7 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
 
-  private heroesUrl = 'http://localhost:9800/api/heroes';  // URL to web API
+  private heroesUrl = 'http://localhost:14040/api/heroes';  // URL to web API
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -40,8 +40,9 @@ export class HeroService {
   }
 
   /** POST: add a new hero to the server */
-  addHero(hero: Hero): Observable<Hero> {
-    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
+  addHero(hero: Hero, username: string): Observable<Hero> {
+    const url = `${this.heroesUrl}?username=${username}`;
+    return this.http.post<Hero>(url, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => {
         this.log(`added hero with id=${newHero.id}`); // Log the ID of the added hero
         // Assign the ID of the added hero to the hero object
@@ -63,8 +64,8 @@ export class HeroService {
   }
 
   /** DELETE: delete the hero from the server */
-  deleteHero(id: number): Observable<Hero> {
-    const url = `${this.heroesUrl}/${id}`;
+  deleteHero(id: number, username: string): Observable<Hero> {
+    const url = `${this.heroesUrl}/${id}?username=${username}`;
 
     return this.http.delete<Hero>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted hero id=${id}`)),
@@ -77,7 +78,7 @@ export class HeroService {
     if (!term.trim()) {
       return of([]);
     }
-    const url = `${this.heroesUrl}/?name=${term}`;
+    const url = `${this.heroesUrl}/search?term=${term}`;
     return this.http.get<Hero[]>(url)
       .pipe(
         tap(x => x.length ? this.log(`found heroes matching "${term}"`) : this.log(`no heroes matching "${term}"`)),

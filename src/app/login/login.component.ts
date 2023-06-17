@@ -22,7 +22,7 @@ export class LoginComponent {
     this.error = ''; // Reset any previous error message
 
     // Perform login authentication
-    this.authService.login(this.username, this.password)
+    this.authService.login({ username: this.username, password: this.password })
       .subscribe(
         (isAuthenticated: boolean) => {
           if (isAuthenticated) {
@@ -39,11 +39,3 @@ export class LoginComponent {
       );
   }
 }
-
-
-
-
-
-
-
-
