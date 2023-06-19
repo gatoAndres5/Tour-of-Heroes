@@ -20,16 +20,19 @@ export class LoginComponent {
 
   login(): void {
     this.error = ''; // Reset any previous error message
-
+  
     // Perform login authentication
     this.authService.login({ username: this.username, password: this.password })
       .subscribe(
-        (isAuthenticated: boolean) => {
-          if (isAuthenticated) {
+        (response: any) => {
+          console.log('Login response:', response);
+          if (response.authenticated) {
+            console.log('Login successful. Redirecting to dashboard...');
             // Redirect or perform any other necessary action upon successful login
             this.router.navigate(['/dashboard']);
           } else {
-            this.error = 'Invalid username or password'; // Display error message for failed login attempts
+            console.log('Login failed. Error:', response.error);
+            this.error = response.error; // Display the error message from the server
           }
         },
         (error) => {
@@ -38,4 +41,6 @@ export class LoginComponent {
         }
       );
   }
-}
+  
+};
+  

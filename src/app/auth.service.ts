@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
+
 @Injectable({
 providedIn: 'root'
 })
@@ -17,16 +18,24 @@ this.isLoggedInSubject.next(false);
 }
 
 login(loginData: { username: string, password: string }): Observable<boolean> {
-return this.http.post<boolean>('http://localhost:14040/api/login', loginData).pipe(
-tap((loggedIn: boolean) => {
-if (loggedIn) {
-this.isLoggedInSubject.next(true);
-this.username = loginData.username; // Set the username property upon successful login
-this.role = this.getRoleFromUsername(loginData.username); // Set the role based on the username
-}
-})
-);
-}
+    return this.http.post<any>('http://localhost:14800/api/login', loginData).pipe(
+      tap((response: any) => {
+        console.log('Login response:', response);
+        const authenticated = response.authenticated === true; // Convert to boolean
+        console.log('Type of loggedIn:', typeof authenticated);
+        if (authenticated) {
+          console.log("should be true");
+          this.isLoggedInSubject.next(true);
+          this.username = loginData.username; // Set the username property upon successful login
+          this.role = this.getRoleFromUsername(loginData.username); // Set the role based on the username
+        }
+      })
+    );
+  }
+  
+  
+  
+  
 
 private getRoleFromUsername(username: string): string {
 // Logic to determine the role based on the username
