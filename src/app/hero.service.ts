@@ -10,10 +10,11 @@ import { MessageService } from './message.service';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
 
-  private heroesUrl = 'http://localhost:14800/api/heroes';  // URL to web API
+  private heroesUrl = 'http://localhost:16800/api/heroes';  // URL to web API
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    withCredentials: true
   };
 
   constructor(
@@ -78,13 +79,16 @@ export class HeroService {
     if (!term.trim()) {
       return of([]);
     }
-    const url = `${this.heroesUrl}/search?term=${term}`;
+    const url = `${this.heroesUrl}/?name=${term}`;
     return this.http.get<Hero[]>(url)
       .pipe(
         tap(x => x.length ? this.log(`found heroes matching "${term}"`) : this.log(`no heroes matching "${term}"`)),
         catchError(this.handleError<Hero[]>('searchHeroes', []))
       );
   }
+  
+  
+  
 
   /**
    * Handle Http operation that failed.

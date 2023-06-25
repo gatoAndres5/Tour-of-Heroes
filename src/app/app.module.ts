@@ -13,13 +13,16 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service'; // Import the AuthService
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
+
   ],
   declarations: [
     AppComponent,
